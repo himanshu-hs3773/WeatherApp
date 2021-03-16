@@ -27,18 +27,17 @@ public class MainActivity extends AppCompatActivity {
         et_dataInput = findViewById(R.id.et_dataInput);
         lv_weatherReport = findViewById(R.id.lv_weatherReports);
 
-        // Button listener on click
+        final WeatherDataService weatherDataService = new WeatherDataService(MainActivity.this);
+
 
         btn_getCityID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                WeatherDataService weatherDataService = new WeatherDataService(MainActivity.this);
                 weatherDataService.getCityID(et_dataInput.getText().toString(), new WeatherDataService.VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
                         Toast.makeText(MainActivity.this, "Enter City Name", Toast.LENGTH_SHORT).show();
                     }
-
                     @Override
                     public void onResponse(String cityID) {
                         if (cityID.equals("")) {
@@ -46,19 +45,31 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(MainActivity.this, "Returned City ID: " + cityID, Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
-
             }
         });
+
 
         btn_getWeatherByCityID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Clicked button 2", Toast.LENGTH_SHORT).show();
+                weatherDataService.getCityForecastByID("44418", new WeatherDataService.ForecastByIDResponse() {
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(MainActivity.this, "Something Wrong uu", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(WeatherReportModel weatherReportModel) {
+                        // Toast.makeText(MainActivity.this, "Something Wrong ttuu", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, weatherReportModel.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
+
+
 
         btn_getWeatherByCityName.setOnClickListener(new View.OnClickListener() {
             @Override
