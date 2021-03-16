@@ -3,10 +3,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -54,16 +57,21 @@ public class MainActivity extends AppCompatActivity {
         btn_getWeatherByCityID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                weatherDataService.getCityForecastByID("44418", new WeatherDataService.ForecastByIDResponse() {
+                weatherDataService.getCityForecastByID(et_dataInput.getText().toString(), new WeatherDataService.ForecastByIDResponse() {
                     @Override
                     public void onError(String message) {
-                        Toast.makeText(MainActivity.this, "Something Wrong uu", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Something Wrong", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onResponse(WeatherReportModel weatherReportModel) {
-                        // Toast.makeText(MainActivity.this, "Something Wrong ttuu", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(MainActivity.this, weatherReportModel.toString(), Toast.LENGTH_SHORT).show();
+                    public void onResponse(List<WeatherReportModel> weatherReportModels) {
+                        if (weatherReportModels.isEmpty()) {
+                            Toast.makeText(MainActivity.this, "Incorrect City ID", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Create ArrayAdapter to push resultant list to in app list view
+                            ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, weatherReportModels);
+                            lv_weatherReport.setAdapter(arrayAdapter);
+                        }
                     }
                 });
             }
@@ -75,7 +83,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(MainActivity.this, "You typed " + et_dataInput.getText().toString(), Toast.LENGTH_SHORT).show();
+                weatherDataService.getCityForecastByName(et_dataInput.getText().toString(), new WeatherDataService.GetCityForecastByName() {
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(MainActivity.this, "Something Wrong", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(List<WeatherReportModel> weatherReportModels) {
+                        if (weatherReportModels.isEmpty()) {
+                            Toast.makeText(MainActivity.this, "Incorrect City ID", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Create ArrayAdapter to push resultant list to in app list view
+                            ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, weatherReportModels);
+                            lv_weatherReport.setAdapter(arrayAdapter);
+                        }
+                    }
+                });
             }
         });
 

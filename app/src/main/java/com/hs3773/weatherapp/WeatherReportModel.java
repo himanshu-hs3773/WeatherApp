@@ -40,23 +40,14 @@ public class WeatherReportModel {
 
     @Override
     public String toString() {
-        return "WeatherReportModel{" +
-                "id=" + id +
-                ", weather_state_name='" + weather_state_name + '\'' +
-                ", Weather_state_abbr='" + Weather_state_abbr + '\'' +
-                ", wind_direction_compass='" + wind_direction_compass + '\'' +
-                ", created='" + created + '\'' +
-                ", applicable_date='" + applicable_date + '\'' +
-                ", min_temp=" + min_temp +
-                ", max_temp=" + max_temp +
-                ", the_temp=" + the_temp +
-                ", wind_speed=" + wind_speed +
-                ", wind_direction=" + wind_direction +
-                ", air_pressure=" + air_pressure +
-                ", humidity=" + humidity +
-                ", visibility=" + visibility +
-                ", predictability=" + predictability +
-                '}';
+        return  " Forecast : '" + weather_state_name + '\'' +'\n' +
+                " Current Temp= '" + the_temp + '\'' +
+                " Humidity = '" + humidity + '\'' +'\n' +
+                " Min = '" + min_temp + '\'' +'\n' +
+                " Max = '" + max_temp + '\'' +'\n' +
+                " Wind Direction = '" + wind_direction_compass + '\'' +'\n' +
+                " Wind Speed= '" + wind_speed + '\'' +'\n'
+                ;
     }
 
     public int getId() {
